@@ -19,17 +19,17 @@ elector.Run(ctx)
 Your listener(s) looks something like this. You can register as many as you want.
 
 ``` go
-type listener struct {
-}
-
+// invoked when this node becomes the leader
 func (l *listener) StartedLeading() {
 	log.Print("started leading")
 }
 
+// invoked when this node stops being the leader
 func (l *listener) StoppedLeading() {
 	log.Print("stopped leading")
 }
 
+// invoked when a new leader is elected
 func (l *listener) NewLeader(id string) {
 	logq.Printf("new leader: %s", id)
 }
