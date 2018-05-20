@@ -145,6 +145,16 @@ type Listener interface {
 	NewLeader(id string)
 }
 
+// IsLeader returns true if this node is the leader.
+func (e *LeaderElector) IsLeader() bool {
+	return e.elector.IsLeader()
+}
+
+// GetLeader returns the ID of the leader.
+func (e *LeaderElector) GetLeader() string {
+	return e.elector.GetLeader()
+}
+
 // Register registers a listener to be called on leader election events.
 func (e *LeaderElector) Register(l Listener) {
 	e.Lock()
