@@ -7,7 +7,7 @@ import (
 	election "github.com/travisjeffery/kube-leaderelection"
 )
 
-func ExampleElection() {
+func ExampleLeaderElector() {
 	// create new elector
 	elector, err := election.NewLeaderElector()
 	if err != nil {
@@ -20,8 +20,7 @@ func ExampleElection() {
 	elector.Run(context.Background())
 }
 
-type listener struct {
-}
+type listener struct{}
 
 func (l *listener) StartedLeading() {
 	log.Print("started leading")

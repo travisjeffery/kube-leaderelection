@@ -1,6 +1,6 @@
 # kube-leaderelection
 
-Leader election for your own services, building on Kubernetes' APIs/etcd.
+Leader election for your services, using Kubernetes' APIs/etcd.
 
 ## Example
 
