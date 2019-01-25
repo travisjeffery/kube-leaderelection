@@ -7,7 +7,6 @@ import (
 	"time"
 
 	api "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
 	v1core "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
@@ -172,10 +171,10 @@ func (e *LeaderElector) Deregister(l Listener) {
 // Run adds this node in the leader election group, starting the leader election process for this
 // node.
 func (e *LeaderElector) Run(ctx context.Context) {
-	wait.Until(e.elector.Run, 0, ctx.Done())
+	e.elector.Run(ctx)
 }
 
-func (e *LeaderElector) startedLeading(stop <-chan struct{}) {
+func (e *LeaderElector) startedLeading(ctx context.Context) {
 	e.Lock()
 	defer e.Unlock()
 	e.leader = true
@@ -183,7 +182,7 @@ func (e *LeaderElector) startedLeading(stop <-chan struct{}) {
 	for listener := range e.listeners {
 		listener.StartedLeading()
 	}
-	<-stop
+	<-ctx.Done()
 }
 
 func (e *LeaderElector) stoppedLeading() {
