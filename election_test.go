@@ -31,5 +31,5 @@ func (l *listener) StoppedLeading() {
 }
 
 func (l *listener) NewLeader(id string) {
-	logq.Printf("new leader: %s", id)
+	log.Printf("new leader: %s", id)
 }
