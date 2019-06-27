@@ -48,7 +48,7 @@ type Config struct {
 	ComponentName string
 	// LockName is name of the resource lock. You probably don't ever need to set this.
 	LockName string
-	// Path to kubeconfig
+	// Path to kubeconfig. If left unset the in cluster config is used by default.
 	KubeConfig string
 }
 
