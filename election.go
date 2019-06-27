@@ -9,7 +9,7 @@ import (
 	api "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
 	v1core "k8s.io/client-go/kubernetes/typed/core/v1"
-	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/leaderelection"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	"k8s.io/client-go/tools/record"
@@ -48,6 +48,8 @@ type Config struct {
 	ComponentName string
 	// LockName is name of the resource lock. You probably don't ever need to set this.
 	LockName string
+	// Path to kubeconfig
+	KubeConfig string
 }
 
 // NewLeaderElector creates a new leader elector instance. Takes an optional Config, by default the
@@ -85,10 +87,12 @@ func NewLeaderElector(args ...interface{}) (*LeaderElector, error) {
 		config.RetryPeriod = time.Second * 3
 	}
 
-	clientConfig, err := rest.InClusterConfig()
+	// This function uses kubeconfig if specified. If kubeconfig is not passed in it fallbacks to inClusterConfig.
+	clientConfig, err := clientcmd.BuildConfigFromFlags("", config.KubeConfig)
 	if err != nil {
 		return nil, err
 	}
+
 	clientset, err := kubernetes.NewForConfig(clientConfig)
 	if err != nil {
 		return nil, err
