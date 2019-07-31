@@ -107,6 +107,7 @@ func NewLeaderElector(args ...interface{}) (*LeaderElector, error) {
 		config.Namespace,
 		config.LockName,
 		clientset.CoreV1(),
+		clientset.CoordinationV1(),
 		resourcelock.ResourceLockConfig{
 			Identity:      config.NodeID,
 			EventRecorder: recorder,
